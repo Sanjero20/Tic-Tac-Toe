@@ -65,3 +65,24 @@ footer {
   display: flex;
   justify-content: space-between;
 }
+
+#p1, #p2 {
+  padding: 10px;
+}
+
+#p1.turn,
+#p2.turn {
+  border: 1px solid black;
+}
+
+.btn {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.reset {
+  padding: 5px 20px;
+  font-size: 15px;
+}
