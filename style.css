@@ -7,7 +7,7 @@
   --steel-blue: #A9BCD0;
   --grey:       #D8DBE2;
 
-  --tictactoe-box: 500px;
+  --tictactoe-box: 400px;
 }
 
 * {
@@ -58,3 +58,10 @@ footer {
   font-size: 75px;
 }
 
+.players {
+  margin: 0 auto;
+  padding-bottom: 20px;
+  width: var(--tictactoe-box);
+  display: flex;
+  justify-content: space-between;
+}
