@@ -128,3 +128,81 @@ footer {
   font-size: 50px;
   font-weight: bold;
 }
+
+.streak-lines {
+  width: var(--tictactoe-box);
+  height: var(--tictactoe-box);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -38%);
+}
+
+.streak-lines > div{
+  position: fixed;
+  opacity: 0;
+}
+
+.line-row1,
+.line-row2,
+.line-row3 {
+  width: 110%;
+  left: -20px;
+  border: 2px solid red;
+}
+
+.line-row1 {
+  top: calc((var(--tictactoe-box) / 3) /2)
+}
+
+.line-row2 {
+  top: calc(var(--tictactoe-box) / 2);
+}
+
+.line-row3 {
+  bottom: calc((var(--tictactoe-box) / 3) /2)
+}
+
+.line-col1, 
+.line-col2,
+.line-col3 {
+  height: 110%;
+  top: -20px;
+  border: 2px solid green;
+}
+
+.line-col1 {
+  left: calc((var(--tictactoe-box) / 3) / 2);
+}
+
+.line-col2 {
+  left: calc(var(--tictactoe-box) / 2);
+}
+
+.line-col3 {
+  right: calc((var(--tictactoe-box) / 3) / 2);
+}
+
+.line-diag1,
+.line-diag2 {
+  width: 150%;
+  border: 2px solid blue;
+}
+
+.line-diag1 {
+  left: -15px;
+  top: -15px;
+  transform-origin: 0%;
+  transform: rotate(45deg);
+}
+
+.line-diag2 {
+  right: -15px;
+  top: -15px;
+  transform-origin: 100%;
+  transform: rotate(-45deg);
+}
+
+.streak-lines > div.show {
+  opacity: 1;
+}
