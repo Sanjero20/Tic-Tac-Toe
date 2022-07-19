@@ -17,6 +17,7 @@
 }
 
 body {
+  position: relative;
   background-color: var(--grey);
   width: 100vw;
   height: 100vh;
@@ -85,4 +86,45 @@ footer {
 .reset {
   padding: 5px 20px;
   font-size: 15px;
+}
+
+.overlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.overlay.show {
+  pointer-events: all;
+  opacity: 1;
+}
+
+.modal {
+  z-index: 1;
+  background-color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 300px;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
+  border-radius: 20px;
+}
+
+.modal.show {
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-content {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+  font-weight: bold;
 }

@@ -27,22 +27,37 @@
       return {name, mark, turn}
     }
 
+    // Document 
+    const boxes = document.querySelectorAll('.box');
+    const btnReset = document.querySelector('.reset');
+
+    const modal = document.querySelector('.modal')
+    const modalContent =  document.querySelector('.modal-content')
+    const overlay = document.querySelector('.overlay')
+
     // Game
     const Game = () => {
-      // let availableSpace = 9;
+      let availableSpace = 9;
+      let clickable = true;
       let turn = '';
+      let gameover = false;
 
       let board = GameBoard();
-      let p1 = Player("Player1", 'x')
-      let p2 = Player("Player2", 'o')
+      let p1 = Player("Player 1", 'x')
+      let p2 = Player("Player 2", 'o')
 
       const p1Display = document.querySelector('#p1')
       const p2Display = document.querySelector('#p2')
 
-      // document variables
-      const boxes = document.querySelectorAll('.box');
-      const btnReset = document.querySelector('.reset');
+      // Event listener
+      document.addEventListener('dragstart', (e) => e.preventDefault())
       btnReset.onclick = reset;
+      overlay.onclick = () => {
+        if (clickable === true) {
+          hidePopUP()
+          reset()
+        }
+      }
 
       // private functions
       function whoseFirstTurn() {
@@ -119,9 +134,23 @@
       function _checkSimilarities(...arrays) {
         arrays.forEach(array => {
           if (array.every(val => val == 'x') || array.every(val => val == 'o')) {
+            if (array.includes("x")) {
+              winner = p1.name
+            }
+            else if (array.includes("o")){
+              winner = p2.name
+            }
+
+            gameover = true
+            clickable = false;
             setTimeout(() => {
-              alert('winner')
+              changeModalContent(`🎉 ${winner} 🎉`)
+              showPopUp();
               reset();
+
+              setTimeout(() => {  // Cause a delay to allow the pop up to fully show
+                clickable = true;   
+              }, 200)
             }, 200); 
           }
         })
@@ -135,26 +164,51 @@
         })
 
         turn = "";
+        availableSpace = 9
+        gameover = false;
         whoseFirstTurn();
+      }
+
+      function showPopUp() {
+        overlay.classList.add('show')
+        modal.classList.add('show')
+      }
+
+      function hidePopUP() {
+        overlay.classList.remove('show')
+        modal.classList.remove('show')
+      }
+
+      function changeModalContent(text) {
+        modalContent.textContent = text;
       }
 
       function drawOnBoard() {
         boxes.forEach((box) => {
           box.addEventListener("click", () => {
-            console.clear();
+            if (gameover === true) return
             if (box.classList.contains('taken')) return; // prevent changing already taken boxes
 
             let row = box.getAttribute("data-row")
             let col = box.getAttribute("data-col")
 
             mark = nextTurn();
-  
             board.setGameBoardValue(row, col, mark)
   
             box.textContent = mark;
             box.classList.add('taken')
-
+            availableSpace--;
             checkWinCondition();
+            if (availableSpace <= 0 && gameover === false) {
+              clickable =  false;
+              setTimeout(() => {
+                changeModalContent("It's a Tie 🤝")
+                showPopUp();
+                setTimeout(() => {  // Cause a delay to allow the pop up to fully show
+                  clickable = true;   
+                }, 200)
+              }, 200);
+            }
           })
         })
       }
@@ -171,3 +225,5 @@
     const play = Game();
     play.playGame()
 })()
+
+// change alert() to a pop up modal
