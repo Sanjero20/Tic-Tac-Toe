@@ -27,13 +27,28 @@
       return {name, mark, turn}
     }
 
-    // Document 
+    // DOM Elements
+    const playerDisplay =  document.querySelector('.players')
+
     const boxes = document.querySelectorAll('.box');
     const btnReset = document.querySelector('.reset');
 
     const modal = document.querySelector('.modal')
     const modalContent =  document.querySelector('.modal-content')
     const overlay = document.querySelector('.overlay')
+
+
+    // Lines 
+    const lineRow1 = document.querySelector('.line-row1')
+    const lineRow2 = document.querySelector('.line-row2')
+    const lineRow3 = document.querySelector('.line-row3')
+
+    const lineCol1 = document.querySelector('.line-col1')
+    const lineCol2 = document.querySelector('.line-col2')
+    const lineCol3 = document.querySelector('.line-col3')
+
+    const lineDiag1 = document.querySelector('.line-diag1')
+    const lineDiag2 = document.querySelector('.line-diag2')
 
     // Game
     const Game = () => {
@@ -112,6 +127,7 @@
         const row2 = [grid[1][0], grid[1][1], grid[1][2]]
         const row3 = [grid[2][0], grid[2][1], grid[2][2]]
 
+        placement = "row"
         _checkSimilarities(row1, row2, row3)
 
       }
@@ -121,6 +137,7 @@
         const col2 = [grid[0][1], grid[1][1], grid[2][1]]
         const col3 = [grid[0][2], grid[1][2], grid[2][2]]
 
+        placement = "column"
         _checkSimilarities(col1, col2, col3)
       }
 
@@ -128,12 +145,14 @@
         const diagonal1 = [grid[0][0], grid[1][1], grid[2][2]]
         const diagonal2 = [grid[0][2], grid[1][1], grid[2][0]]
 
+        placement = "diagonal"
         _checkSimilarities(diagonal1, diagonal2)
       }
 
       function _checkSimilarities(...arrays) {
-        arrays.forEach(array => {
+        arrays.forEach((array) => {
           if (array.every(val => val == 'x') || array.every(val => val == 'o')) {
+
             if (array.includes("x")) {
               winner = p1.name
             }
@@ -143,20 +162,63 @@
 
             gameover = true
             clickable = false;
+
             setTimeout(() => {
-              changeModalContent(`🎉 ${winner} 🎉`)
+              changeModalContent(`🎉 ${winner} wins! 🎉`)
               showPopUp();
-              reset();
+              // reset();
 
               setTimeout(() => {  // Cause a delay to allow the pop up to fully show
                 clickable = true;   
-              }, 200)
-            }, 200); 
+              }, 500)
+            }, 500); 
+
+            _showStreakLine(array, arrays);
           }
         })
       }
 
+      function _showStreakLine(array, arrays) {
+        // check what row or column were a streak will show
+        if (placement === "row") {
+          if (array === arrays[0]) {
+            lineRow1.classList.add('show')
+          }
+          if (array === arrays[1]) {
+            lineRow2.classList.add('show')
+          }
+          if (array === arrays[2]) {
+            lineRow3.classList.add('show')
+          }
+        }
+
+        else if (placement === "column") {
+          if (array === arrays[0]) {
+            lineCol1.classList.add('show')
+          }
+          if (array === arrays[1]) {
+            lineCol2.classList.add('show')
+          }
+          if (array === arrays[2]) {
+            lineCol3.classList.add('show')
+          }
+        }
+        else if (placement === "diagonal") {
+          if (array === arrays[0]) {
+            lineDiag1.classList.add('show')
+          }
+          if (array === arrays[1]) {
+            lineDiag2.classList.add('show')
+          }
+        }
+      }
+
       function reset() {
+        const allLines = document.querySelectorAll('.streak-lines > div')
+        allLines.forEach(lines => {
+          lines.classList.remove('show')
+        })
+
         board.resetGameBoard();
         boxes.forEach(box => {
           box.textContent = "";
@@ -172,11 +234,13 @@
       function showPopUp() {
         overlay.classList.add('show')
         modal.classList.add('show')
+        playerDisplay.classList.add('hide')
       }
 
       function hidePopUP() {
         overlay.classList.remove('show')
         modal.classList.remove('show')
+        playerDisplay.classList.remove('hide')
       }
 
       function changeModalContent(text) {
@@ -225,5 +289,3 @@
     const play = Game();
     play.playGame()
 })()
-
-// change alert() to a pop up modal
