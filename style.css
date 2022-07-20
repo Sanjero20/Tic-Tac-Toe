@@ -222,10 +222,17 @@ footer {
   opacity: 1;
 }
 
+@media (max-height: 1000px){
+  :root {
+    --tictactoe-box: 300px;
+    --box-fontsize: 50px;
+  }
+}
+
 @media (max-width: 800px) {
   :root {
     --tictactoe-box: 275px;
-    --box-fontsize: 30px;
+    --box-fontsize: 50px;
   }
 
   .modal {
